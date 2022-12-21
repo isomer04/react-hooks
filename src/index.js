@@ -1,48 +1,63 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer, useRef } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 // import { FaStar } from "react-icons/fa";
 
-
-
-//Lesson: dispatching actions with useReducer
-
-const initialState = {
-  message: "hi"
-};
-
-function reducer(state, action) {
-  switch(action.type){
-    case "yell":
-      return {
-        message: `Hey! I JUST SAID ${state.message}`
-      }
-      case "whisper":
-        return {
-          message: `excuse me, I just said ${state.message}`
-        };
-  }
-}
-
 function App() {
+  const sound = useRef();
+  const color = useRef();
 
-  const [state, dispatch] = useReducer(
-    reducer,
-    initialState
-  );
+  const submit = (e) => {
+    e.preventDefault();
+    const soundVal = sound.current.value;
+    const colorVal = color.current.value;
+    alert(`${soundVal} sounds like ${colorVal}`);
+    sound.current.value = "";
+    color.current.value = "";
+  };
 
   return (
-    <>
-      <p>Message: {state.message} </p>
-      <button onClick = {() => dispatch( {type: "yell"})}>YELL </button>
-      
-      <br/>
-
-      <button onClick = {() => dispatch( {type: "whisper"})}>whisper</button>
-
-    </>
+    <form onSubmit={submit}>
+      <input ref={sound} type="text" placeholder="Sound..." />
+      <input ref={color} type="color" />
+      <button> ADD</button>
+    </form>
   );
 }
+
+
+// ====================================
+//Lesson: dispatching actions with useReducer
+
+// const initialState = {
+//   message: "hi",
+// };
+
+// function reducer(state, action) {
+//   switch (action.type) {
+//     case "yell":
+//       return {
+//         message: `Hey! I JUST SAID ${state.message}`,
+//       };
+//     case "whisper":
+//       return {
+//         message: `excuse me, I just said ${state.message}`,
+//       };
+//   }
+// }
+
+// function App() {
+//   const [state, dispatch] = useReducer(reducer, initialState);
+
+//   return (
+//     <>
+//       <p>Message: {state.message} </p>
+//       <button onClick={() => dispatch({ type: "yell" })}>YELL </button>
+//       <br />
+//       <button onClick={() => dispatch({ type: "whisper" })}>whisper</button>
+//     </>
+//   );
+// }
 
 // Using useReducer instead of useState from eariler examples
 
