@@ -1,31 +1,99 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 // import { FaStar } from "react-icons/fa";
 
-function App() {
-  const [data, setData] = useState([]);
 
-  useEffect(() => {
-    fetch(`https://api.github.com/users`)
-      .then((response) => response.json())
-      .then(setData);
-  }, []);
 
-  if (data) {
-    return (
-      <div>
-        <ul>
-          {data.map((user) => (
-            <li key={user.id}>{user.login}</li>
-          ))}
-        </ul>
+//Lesson: dispatching actions with useReducer
 
-        <button onClick={() => setData([])} >Remove Data</button>
-      </div>
-    );
+const initialState = {
+  message: "hi"
+};
+
+function reducer(state, action) {
+  switch(action.type){
+    case "yell":
+      return {
+        message: `Hey! I JUST SAID ${state.message}`
+      }
+      case "whisper":
+        return {
+          message: `excuse me, I just said ${state.message}`
+        };
   }
 }
+
+function App() {
+
+  const [state, dispatch] = useReducer(
+    reducer,
+    initialState
+  );
+
+  return (
+    <>
+      <p>Message: {state.message} </p>
+      <button onClick = {() => dispatch( {type: "yell"})}>YELL </button>
+      
+      <br/>
+
+      <button onClick = {() => dispatch( {type: "whisper"})}>whisper</button>
+
+    </>
+  );
+}
+
+// Using useReducer instead of useState from eariler examples
+
+// function App() {
+//   const [checked, toggle] = useReducer((checked) => !checked, false);
+
+//   return (
+//     <>
+//       <input type="checkbox" value={checked} onChange={toggle} />
+//       <p>{checked ? "checked" : "not checked"} </p>
+//     </>
+//   );
+// }
+
+//useReducer for incrementing numbers
+
+// function App() {
+//   const [number, setNumber] = useReducer(
+//     (number, newNumber) => number + newNumber,
+//     0
+//   );
+
+//   return <h1 onClick={() => setNumber(1)}>{number} </h1>;
+// }
+
+// ==============================
+// useEffect starts
+
+// function App() {
+//   const [data, setData] = useState([]);
+
+//   useEffect(() => {
+//     fetch(`https://api.github.com/users`)
+//       .then((response) => response.json())
+//       .then(setData);
+//   }, []);
+
+//   if (data) {
+//     return (
+//       <div>
+//         <ul>
+//           {data.map((user) => (
+//             <li key={user.id}>{user.login}</li>
+//           ))}
+//         </ul>
+
+//         <button onClick={() => setData([])} >Remove Data</button>
+//       </div>
+//     );
+//   }
+// }
 
 // useEffect for logged in and logged out
 
