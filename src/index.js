@@ -1,34 +1,88 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import { FaStar } from "react-icons/fa";
+// import { FaStar } from "react-icons/fa";
 
-const createArray = (length) => [...Array(length)];
-
-function Star({ selected = false, onSelect }) {
-  return <FaStar color={selected ? "red" : "gray"} onClick={onSelect} />;
-}
-
-function StarRating({ totalStars = 5 }) {
-  const [selectedStars, setSelectedStars] = useState(0);
-
-  return (
-    <>
-      {createArray(totalStars).map((n, i) => (
-        <Star
-          key={i}
-          selected={selectedStars > i}
-          onSelect={() => setSelectedStars(i + 1)}
-        />
-      ))}
-
-      <p>{selectedStars} of {totalStars}</p>
-    </>
-  );
-}
 function App() {
-  return <StarRating totalStars={6} />;
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetch(`https://api.github.com/users`)
+      .then((response) => response.json())
+      .then(setData);
+  }, []);
+
+  if (data) {
+    return (
+      <div>
+        <ul>
+          {data.map((user) => (
+            <li key={user.id}>{user.login}</li>
+          ))}
+        </ul>
+
+        <button onClick={() => setData([])} >Remove Data</button>
+      </div>
+    );
+  }
 }
+
+// useEffect for logged in and logged out
+
+// function App() {
+//   const [name, setName] = useState("Jan");
+//   const [admin, setAdmin] = useState(false);
+
+//   useEffect(() => {
+//     document.title = `Celebrate ${name}`;
+//   }, [name]);
+
+//   useEffect(() => {
+//     console.log(`The user is: ${admin ? "admin" : "not admin"}.`);
+//   }, [admin]);
+
+//   return (
+//     <section>
+//       <p>Congratulations {name} ! </p>
+//       <button onClick={() => setName("Will")}>Change Winner</button>
+//       <p> {admin ? "logged in" : "not logged in"} </p>
+
+//       <button onClick={() => setAdmin(true)}>Log In</button>
+//     </section>
+//   );
+// }
+
+// ================
+// useState start for creating star ratings
+// ===================
+// const createArray = (length) => [...Array(length)];
+
+// function Star({ selected = false, onSelect }) {
+//   return <FaStar color={selected ? "red" : "gray"} onClick={onSelect} />;
+// }
+
+// function StarRating({ totalStars = 5 }) {
+//   const [selectedStars, setSelectedStars] = useState(0);
+
+//   return (
+//     <>
+//       {createArray(totalStars).map((n, i) => (
+//         <Star
+//           key={i}
+//           selected={selectedStars > i}
+//           onSelect={() => setSelectedStars(i + 1)}
+//         />
+//       ))}
+//       <p>
+//         {selectedStars} of {totalStars}
+//       </p>
+//     </>
+//   );
+// }
+
+// function App() {
+//   return <StarRating totalStars={6} />;
+// }
 
 // function App() {
 //   const [status, setStatus] = useState("Not Delivered");
@@ -37,7 +91,6 @@ function App() {
 //   return (
 //     <div>
 //       <input type="checkbox" value={checked} onChange={(checked) => setChecked(!checked)} />
-
 //       <p>{checked ? "checked" : "not checked"} </p>
 
 //       {/* <h1> The package is: {status}.</h1>
@@ -46,7 +99,7 @@ function App() {
 //   );
 // }
 
-const [, , third] = ["Alex", "Ali", "Anna"];
+// const [, , third] = ["Alex", "Ali", "Anna"];
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
