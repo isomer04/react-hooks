@@ -3,28 +3,62 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 // import { FaStar } from "react-icons/fa";
 
+// Creating controlled components with useState
+
 function App() {
-  const sound = useRef();
-  const color = useRef();
+  const [sound, setSound] = useState("");
+  const [color, setColor] = useState("#000000");
 
   const submit = (e) => {
     e.preventDefault();
-    const soundVal = sound.current.value;
-    const colorVal = color.current.value;
-    alert(`${soundVal} sounds like ${colorVal}`);
-    sound.current.value = "";
-    color.current.value = "";
+
+    alert(`${sound} sounds like ${color}`);
+    setSound("");
+    setColor("#000000");
   };
 
   return (
     <form onSubmit={submit}>
-      <input ref={sound} type="text" placeholder="Sound..." />
-      <input ref={color} type="color" />
+      <input
+        value={sound}
+        type="text"
+        placeholder="Sound..."
+        onChange={(e) => setSound(e.target.value)}
+      />
+
+      <input
+        value={color}
+        type="color"
+        onChange={(e) => setColor(e.target.value)}
+      />
       <button> ADD</button>
     </form>
   );
 }
 
+// Managing form inputs with useRef
+
+// function App() {
+//   const sound = useRef();
+//   const color = useRef();
+
+//   const submit = (e) => {
+//     e.preventDefault();
+//     const soundVal = sound.current.value;
+//     const colorVal = color.current.value;
+//     alert(`${soundVal} sounds like ${colorVal}`);
+//     sound.current.value = "";
+//     color.current.value = "";
+//   };
+
+//   return (
+//     <form onSubmit={submit}>
+//       <input ref={sound} type="text" placeholder="Sound..." />
+//       <input ref={color} type="color" />
+//       <button> ADD</button>
+//     </form>
+//   );
+// }
 
 // ====================================
 //Lesson: dispatching actions with useReducer
